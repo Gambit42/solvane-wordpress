@@ -64,7 +64,7 @@ function ssc_register_content_types() {
 			'has_archive'  => 'projects',
 			'rewrite'      => array( 'slug' => 'projects' ),
 			'menu_icon'    => 'dashicons-admin-home',
-			'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+			'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields' ),
 		)
 	);
 
@@ -78,7 +78,7 @@ function ssc_register_content_types() {
 			'has_archive'  => 'products',
 			'rewrite'      => array( 'slug' => 'products' ),
 			'menu_icon'    => 'dashicons-products',
-			'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ),
+			'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes', 'custom-fields' ),
 		)
 	);
 
