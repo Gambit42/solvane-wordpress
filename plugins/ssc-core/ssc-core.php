@@ -417,6 +417,7 @@ add_action(
 						'name'       => SSC_BUSINESS['name'],
 						'url'        => home_url( '/' ),
 						'image'      => $image,
+						'logo'       => get_site_icon_url( 512 ),
 						'telephone'  => SSC_BUSINESS['phone'],
 						'email'      => SSC_BUSINESS['email'],
 						'areaServed' => SSC_BUSINESS['area'],
