@@ -1,0 +1,28 @@
+# Allowlist: ignore everything in wp-content, then opt in only code we own.
+# Core, database, uploads, and third-party plugins/themes are per-environment.
+/*
+!/.gitignore
+!/.gitattributes
+!/.github/
+!/DEPLOY.md
+
+# Our theme
+!/themes/
+/themes/*
+!/themes/ssc/
+
+# Our custom plugins (add a line per plugin we write)
+!/plugins/
+/plugins/*
+!/plugins/ssc-core/
+
+# Never commit, even inside tracked folders
+node_modules/
+vendor/
+*.log
+.env
+.env.*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

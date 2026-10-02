@@ -1,0 +1,58 @@
+name: Deploy Solvane
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: solvane-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out selected commit
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+
+      - name: Deploy custom theme
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          rsync -az --delete \
+            --exclude node_modules \
+            themes/ssc/ \
+            solvane@"$SERVER_IP":public/wp-content/themes/ssc/
+
+      - name: Deploy custom plugin
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          rsync -az --delete \
+            plugins/ssc-core/ \
+            solvane@"$SERVER_IP":public/wp-content/plugins/ssc-core/
+
+      - name: Finish WordPress deployment
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          ssh solvane@"$SERVER_IP" '
+            wp plugin activate ssc-core --path="$HOME/public"
+            wp rewrite flush --path="$HOME/public"
+          '
