@@ -39,5 +39,23 @@ add_filter(
 
 add_action( 'init', fn() => register_block_style( 'core/list', array( 'name' => 'checkmark', 'label' => __( 'Checkmark', 'ssc' ) ) ) );
 
+// Preload the hero photo (first cover inside the page's first section) so it downloads with the HTML instead of after ~60KB of inline CSS.
+add_action(
+	'wp_head',
+	function () {
+		$blocks = is_singular() ? array_values( array_filter( parse_blocks( get_queried_object()->post_content ), fn( $b ) => $b['blockName'] ) ) : array();
+		if ( $blocks && preg_match( '/<!-- wp:cover \{[^\n]*?"id":(\d+)/', serialize_block( $blocks[0] ), $m ) ) {
+			$id = (int) $m[1];
+			printf(
+				'<link rel="preload" as="image" href="%s" imagesrcset="%s" imagesizes="%s" fetchpriority="high" />' . "\n",
+				esc_url( wp_get_attachment_image_url( $id, 'full' ) ),
+				esc_attr( wp_get_attachment_image_srcset( $id, 'full' ) ),
+				esc_attr( wp_get_attachment_image_sizes( $id, 'full' ) )
+			);
+		}
+	},
+	1
+);
+
 // Fallback favicon until a Site Icon is uploaded in Settings → General.
 add_action( 'wp_head', fn() => has_site_icon() || printf( '<link rel="icon" href="%s" type="image/svg+xml" />' . "\n", esc_url( get_theme_file_uri( 'assets/img/favicon.svg' ) ) ) );

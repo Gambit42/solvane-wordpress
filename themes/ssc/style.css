@@ -240,17 +240,11 @@ p { text-wrap: pretty; }
 .hero-cover { text-shadow: 0 1px 24px rgba(0, 0, 0, .25); }
 
 /* Motion
-   Page load: hero cascade. Scroll: .reveal / .reveal-group (assets/js/ssc.js).
+   Scroll: .reveal / .reveal-group (assets/js/ssc.js).
    Hidden state only applies once JS has flagged <html>, so no-JS visitors still see everything. */
 :root { --ease: cubic-bezier(.22, 1, .36, 1); }
-@keyframes ssc-rise { from { opacity: 0; transform: translateY(24px); } }
-@keyframes ssc-settle { from { transform: scale(1.08); } }
 @media (prefers-reduced-motion: no-preference) {
 	html { scroll-behavior: smooth; }
-	.hero-cover .wp-block-cover__image-background { animation: ssc-settle 1.8s var(--ease) both; }
-	.hero-cover h1 { animation: ssc-rise 1s .15s var(--ease) both; }
-	.hero-foot > :first-child { animation: ssc-rise .9s .4s var(--ease) both; }
-	.hero-foot > :last-child { animation: ssc-rise .9s .5s var(--ease) both; }
 
 	.ssc-js .reveal,
 	.ssc-js .reveal-group > * { opacity: 0; transform: translateY(28px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--i, 0) * var(--stagger, .1s)); }
@@ -282,12 +276,6 @@ p { text-wrap: pretty; }
 .wp-block-column:has(.ssc-form) + .wp-block-column h3 { font-size: 1rem; margin: 1.5rem 0 .5rem; }
 .wp-block-column:has(.ssc-form) + .wp-block-column h3:first-child { margin-top: 0; }
 .wp-block-column:has(.ssc-form) + .wp-block-column ul { padding-left: 1.1rem; margin: 0; }
-@media (prefers-reduced-motion: no-preference) {
-	.page-hero > *, .page-hero .hero-text > * { animation: ssc-rise .9s var(--ease) both; }
-	.page-hero > :nth-child(2), .page-hero .hero-text > :nth-child(2) { animation-delay: .1s; }
-	.page-hero > :nth-child(3), .page-hero .hero-text > :nth-child(3) { animation-delay: .2s; }
-	.page-hero .hero-text { animation: none; }
-}
 .page-hero.is-compact .wp-block-post-terms { display: flex; flex-wrap: wrap; gap: 6px; }
 .page-hero.is-compact .wp-block-post-terms__separator { display: none; }
 .section-head.is-layout-constrained > * { margin-left: 0 !important; max-width: none; }
